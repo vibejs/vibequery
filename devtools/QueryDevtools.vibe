@@ -1,0 +1,101 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import { useQueryDevtools } from '@usevibejs/query/devtools';
+
+const devtools = useQueryDevtools();
+const open = ref(false);
+
+function keyText(key: readonly unknown[]): string {
+  return JSON.stringify(key);
+}
+</script>
+
+<template>
+  <aside class="vq-devtools" aria-label="VibeQuery devtools">
+    <button type="button" :aria-expanded="open" @click="open = !open">
+      VibeQuery
+      <span>{{ devtools.queries.length }} queries</span>
+    </button>
+    <div v-if="open">
+      <button type="button" @click="devtools.clearEvents()">Clear events</button>
+      <h2>Queries</h2>
+      <ul>
+        <li v-for="query in devtools.queries" :key="query.queryHash">
+          <code>{{ keyText(query.queryKey) }}</code>
+          <span>{{ query.status }}</span>
+          <span>{{ query.fetchStatus }}</span>
+          <span>{{ query.isStale ? 'stale' : 'fresh' }}</span>
+          <span>{{ query.observers }} observers</span>
+          <span v-if="query.error">{{ query.error }}</span>
+        </li>
+      </ul>
+      <h2>Mutations</h2>
+      <ul>
+        <li v-for="mutation in devtools.mutations" :key="mutation.mutationId">
+          <span>{{ mutation.status }}</span>
+          <span v-if="mutation.error">{{ mutation.error }}</span>
+        </li>
+      </ul>
+      <h2>Events</h2>
+      <ol>
+        <li v-for="(event, index) in devtools.events" :key="index">
+          {{ event.scope }} {{ event.type }} {{ event.action }} {{ event.detail }}
+        </li>
+      </ol>
+    </div>
+  </aside>
+</template>
+
+<style scoped>
+.vq-devtools {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 40;
+  max-width: 28rem;
+  color: #17211b;
+  font: 13px/1.4 ui-sans-serif, system-ui, sans-serif;
+  background: #f7f4ec;
+  border: 1px solid #d5d0c4;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgb(23 33 27 / 16%);
+}
+
+button {
+  font: inherit;
+}
+
+.vq-devtools > button {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  text-align: left;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0 12px 12px;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid #e4dfd3;
+}
+
+h2 {
+  margin: 8px 12px 4px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+</style>

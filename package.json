@@ -1,0 +1,87 @@
+{
+  "name": "@usevibejs/query",
+  "version": "0.1.0",
+  "description": "VibeQuery — powerful asynchronous state and data fetching for Vibe.js.",
+  "keywords": [
+    "async",
+    "cache",
+    "query",
+    "tanstack",
+    "typescript",
+    "vibejs"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vibejs/vibequery.git"
+  },
+  "files": [
+    "dist",
+    "devtools/QueryDevtools.vibe",
+    "README.md",
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./contract": {
+      "types": "./dist/contract.d.ts",
+      "import": "./dist/contract.js",
+      "default": "./dist/contract.js"
+    },
+    "./devtools": {
+      "types": "./dist/devtools.d.ts",
+      "import": "./dist/devtools.js",
+      "default": "./dist/devtools.js"
+    },
+    "./devtools/QueryDevtools.vibe": "./devtools/QueryDevtools.vibe"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "pnpm build && tsc --noEmit && pnpm --dir examples/gallery typecheck",
+    "lint": "oxlint --deny-warnings",
+    "fmt": "oxfmt",
+    "test": "vitest run --project unit --project components",
+    "test:coverage": "vitest run --coverage --project unit --project components",
+    "test:integration": "pnpm build && pnpm --dir examples/gallery build && vitest run --project integration",
+    "check": "oxfmt --check && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:integration",
+    "dev": "pnpm --dir examples/gallery dev"
+  },
+  "dependencies": {
+    "@tanstack/query-core": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@usevibejs/compiler": "catalog:",
+    "@usevibejs/contract": "catalog:",
+    "@usevibejs/ui": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "jsdom": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@usevibejs/contract": "^0.1.0",
+    "@usevibejs/ui": "^0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@usevibejs/contract": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": "^24.15.0 || >=26"
+  },
+  "packageManager": "pnpm@12.14.0"
+}
