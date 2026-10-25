@@ -1,0 +1,18 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import { useQuery } from '@usevibejs/query';
+
+const term = ref('ada');
+const result = useQuery({
+  queryKey: ['search', term],
+  queryFn: async () => `result:${term.value}`,
+});
+</script>
+
+<template>
+  <label>
+    Search
+    <input aria-label="Search" v-model="term" />
+  </label>
+  <p>{{ result.isFetching ? 'Searching' : result.data }}</p>
+</template>

@@ -1,0 +1,16 @@
+<script setup lang="ts">
+import { useQuery } from '@usevibejs/query';
+import { loadUser } from './api.ts';
+
+const user = useQuery({
+  queryKey: ['user'],
+  queryFn: ({ signal }) => {
+    signal.throwIfAborted();
+    return loadUser();
+  },
+});
+</script>
+
+<template>
+  <p :data-status="user.status">{{ user.isPending ? 'Loading' : user.data?.name }}</p>
+</template>
