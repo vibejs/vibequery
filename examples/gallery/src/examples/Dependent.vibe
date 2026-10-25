@@ -1,0 +1,44 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import { useQuery } from '@usevibejs/query';
+import Button from '@vibecn/Button.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import { fetchPerson, fetchProjects } from '../api.ts';
+
+const personId = ref('ada');
+const person = useQuery({
+  queryKey: ['person', personId],
+  queryFn: ({ signal }) => fetchPerson(personId.value, signal),
+});
+const projects = useQuery({
+  queryKey: ['projects', personId],
+  enabled: () => person.data !== undefined,
+  queryFn: ({ signal }) => fetchProjects(personId.value, signal),
+});
+
+function choose(id: string): void {
+  personId.value = id;
+}
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Projects by person</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <div class="flex flex-wrap gap-2" role="group" aria-label="People">
+        <Button type="button" :variant="personId === 'ada' ? 'default' : 'outline'" :aria-pressed="personId === 'ada'" @click="choose('ada')">Ada</Button>
+        <Button type="button" :variant="personId === 'grace' ? 'default' : 'outline'" :aria-pressed="personId === 'grace'" @click="choose('grace')">Grace</Button>
+      </div>
+      <p v-if="person.isPending">Loading person</p>
+      <p v-else>{{ person.data?.name }}</p>
+      <ul v-if="projects.data">
+        <li v-for="project in projects.data" :key="project.id">{{ project.title }}</li>
+      </ul>
+    </CardContent>
+  </Card>
+</template>

@@ -1,0 +1,32 @@
+<script setup lang="ts">
+import { useQuery, useQueryClient } from '@usevibejs/query';
+import Button from '@vibecn/Button.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import { bumpRevision, fetchRevision } from '../api.ts';
+
+const client = useQueryClient();
+const revision = useQuery({
+  queryKey: ['revision'],
+  queryFn: ({ signal }) => fetchRevision(signal),
+});
+
+function publish(): void {
+  bumpRevision();
+  void client.invalidateQueries({ queryKey: ['revision'] });
+}
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Invalidation</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <p>Directory revision {{ revision.data ?? '…' }}</p>
+      <Button type="button" variant="outline" @click="publish">Publish and invalidate</Button>
+    </CardContent>
+  </Card>
+</template>

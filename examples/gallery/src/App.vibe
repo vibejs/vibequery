@@ -1,0 +1,65 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import QueryDevtools from '@usevibejs/query/devtools/QueryDevtools.vibe';
+import Button from '@vibecn/Button.vibe';
+import Background from './examples/Background.vibe';
+import ContractFetch from './examples/ContractFetch.vibe';
+import Dependent from './examples/Dependent.vibe';
+import Infinite from './examples/Infinite.vibe';
+import Invalidate from './examples/Invalidate.vibe';
+import Pages from './examples/Pages.vibe';
+import Retry from './examples/Retry.vibe';
+import Search from './examples/Search.vibe';
+import Todos from './examples/Todos.vibe';
+import Users from './examples/Users.vibe';
+
+const panels = [
+  { id: 'users', label: 'User' },
+  { id: 'search', label: 'Search' },
+  { id: 'dependent', label: 'Dependent' },
+  { id: 'pages', label: 'Pages' },
+  { id: 'feed', label: 'Feed' },
+  { id: 'todos', label: 'Todos' },
+  { id: 'retry', label: 'Retry' },
+  { id: 'invalidate', label: 'Invalidate' },
+  { id: 'background', label: 'Background' },
+  { id: 'contract', label: 'Contract' },
+] as const;
+
+const current = ref<(typeof panels)[number]['id']>('users');
+</script>
+
+<template>
+  <main class="mx-auto flex min-h-screen max-w-3xl flex-col gap-6 px-4 py-8">
+    <header class="flex flex-col gap-2">
+      <p class="text-sm text-muted-foreground">VibeQuery</p>
+      <h1 class="text-3xl font-semibold tracking-tight">Powerful async state for Vibe.js</h1>
+      <p class="text-muted-foreground">
+        Cached queries, reactive keys, and optimistic mutations in real vibe components.
+      </p>
+    </header>
+    <nav class="flex flex-wrap gap-2" aria-label="Examples">
+      <Button
+        v-for="panel in panels"
+        :key="panel.id"
+        type="button"
+        :variant="current === panel.id ? 'default' : 'outline'"
+        :aria-pressed="current === panel.id"
+        @click="current = panel.id"
+      >
+        {{ panel.label }}
+      </Button>
+    </nav>
+    <Users v-if="current === 'users'" />
+    <Search v-else-if="current === 'search'" />
+    <Dependent v-else-if="current === 'dependent'" />
+    <Pages v-else-if="current === 'pages'" />
+    <Infinite v-else-if="current === 'feed'" />
+    <Todos v-else-if="current === 'todos'" />
+    <Retry v-else-if="current === 'retry'" />
+    <Invalidate v-else-if="current === 'invalidate'" />
+    <Background v-else-if="current === 'background'" />
+    <ContractFetch v-else />
+    <QueryDevtools />
+  </main>
+</template>

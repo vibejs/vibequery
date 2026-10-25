@@ -1,0 +1,40 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import { ApiResultError, fromApiResult } from '@usevibejs/query/contract';
+import { useQuery } from '@usevibejs/query';
+import Button from '@vibecn/Button.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import { directoryApi } from '../directory.ts';
+
+const id = ref('ada');
+const profile = useQuery({
+  queryKey: ['contract-profile', id],
+  queryFn: ({ signal }) => fromApiResult(directoryApi.one({ params: { id: id.value } }, { signal })),
+});
+
+function code(): string {
+  const error = profile.error;
+  if (error instanceof ApiResultError) return error.code;
+  return error?.message ?? 'Request failed';
+}
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Typed contract</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <div class="flex gap-2" role="group" aria-label="Profiles">
+        <Button type="button" :variant="id === 'ada' ? 'default' : 'outline'" @click="id = 'ada'">Ada</Button>
+        <Button type="button" :variant="id === 'missing' ? 'default' : 'outline'" @click="id = 'missing'">Missing</Button>
+      </div>
+      <p v-if="profile.isPending">Loading the profile</p>
+      <p v-else-if="profile.isError" role="alert">{{ code() }}</p>
+      <p v-else>{{ profile.data?.name }}, {{ profile.data?.role }}</p>
+    </CardContent>
+  </Card>
+</template>

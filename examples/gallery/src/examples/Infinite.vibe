@@ -1,0 +1,35 @@
+<script setup lang="ts">
+import { useInfiniteQuery } from '@usevibejs/query';
+import Button from '@vibecn/Button.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import { fetchFeed } from '../api.ts';
+
+const feed = useInfiniteQuery({
+  queryKey: ['feed'],
+  initialPageParam: 0,
+  queryFn: ({ pageParam, signal }) => fetchFeed(pageParam, signal),
+  getNextPageParam: (last) => last.next,
+});
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Feed</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <p v-if="feed.isPending">Loading the feed</p>
+      <ul v-else>
+        <template v-for="group in feed.data?.pages" :key="group.items[0]">
+          <li v-for="item in group.items" :key="item">{{ item }}</li>
+        </template>
+      </ul>
+      <Button type="button" variant="outline" :disabled="!feed.hasNextPage || feed.isFetchingNextPage" @click="feed.fetchNextPage()">
+        {{ feed.isFetchingNextPage ? 'Loading more' : 'Load more' }}
+      </Button>
+    </CardContent>
+  </Card>
+</template>

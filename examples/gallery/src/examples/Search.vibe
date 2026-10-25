@@ -1,0 +1,34 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import { useQuery } from '@usevibejs/query';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import Input from '@vibecn/Input.vibe';
+import { searchPeople } from '../api.ts';
+
+const term = ref('');
+const results = useQuery({
+  queryKey: ['search', term],
+  enabled: () => term.value.trim().length > 0,
+  queryFn: ({ signal }) => searchPeople(term.value, signal),
+});
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Search</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <Input v-model="term" type="search" aria-label="Search people" placeholder="Search people" />
+      <p v-if="term.trim().length === 0" class="text-muted-foreground">Type a name to search the directory.</p>
+      <p v-else-if="results.isPending">Searching</p>
+      <p v-else-if="results.isError" role="alert">{{ results.error.message }}</p>
+      <ul v-else class="flex flex-col gap-1">
+        <li v-for="person in results.data" :key="person.id">{{ person.name }}</li>
+      </ul>
+    </CardContent>
+  </Card>
+</template>

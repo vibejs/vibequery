@@ -1,0 +1,26 @@
+{
+  "name": "vibequery-examples",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "typecheck": "tsc -b --runExternalCode"
+  },
+  "dependencies": {
+    "@usevibejs/contract": "catalog:",
+    "@usevibejs/query": "workspace:*",
+    "@usevibejs/ui": "catalog:",
+    "clsx": "catalog:",
+    "tailwind-merge": "catalog:",
+    "valibot": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "catalog:",
+    "@usevibejs/compiler": "catalog:",
+    "@usevibejs/language-tools": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:ts-next",
+    "vite": "catalog:"
+  }
+}

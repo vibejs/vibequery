@@ -1,0 +1,71 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import { optimisticMutation, useMutation, useQuery, useQueryClient } from '@usevibejs/query';
+import Button from '@vibecn/Button.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import Input from '@vibecn/Input.vibe';
+import { createTodo, fetchTodos, toggleTodo, type Todo } from '../api.ts';
+
+const title = ref('');
+const client = useQueryClient();
+const list = useQuery({
+  queryKey: ['todos'],
+  queryFn: ({ signal }) => fetchTodos(signal),
+});
+const add = useMutation(
+  optimisticMutation<Todo, string, Todo[]>({
+    queryClient: client,
+    queryKey: ['todos'],
+    mutationFn: createTodo,
+    update: (current, nextTitle) => [
+      ...(current ?? []),
+      { id: -1, title: nextTitle, done: false },
+    ],
+  }),
+);
+const toggle = useMutation(
+  optimisticMutation<Todo, number, Todo[]>({
+    queryClient: client,
+    queryKey: ['todos'],
+    mutationFn: toggleTodo,
+    update: (current, id) =>
+      (current ?? []).map((todo) => (todo.id === id ? { ...todo, done: !todo.done } : todo)),
+  }),
+);
+
+function submit(): void {
+  const next = title.value.trim();
+  if (next.length === 0) return;
+  add.mutate(next, {
+    onSuccess: () => {
+      title.value = '';
+    },
+  });
+}
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Todos</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <form class="flex gap-2" @submit.prevent="submit">
+        <Input v-model="title" aria-label="Todo title" placeholder="Add a todo, or type fail" />
+        <Button type="submit" :disabled="add.isPending">Add</Button>
+      </form>
+      <p v-if="add.isError" role="alert">{{ add.error.message }}</p>
+      <ul class="flex flex-col gap-2">
+        <li v-for="todo in list.data" :key="todo.id" class="flex items-center justify-between gap-3">
+          <span :class="todo.done ? 'line-through text-muted-foreground' : ''">{{ todo.title }}</span>
+          <Button type="button" variant="outline" size="sm" :disabled="todo.id < 0" :aria-pressed="todo.done" @click="toggle.mutate(todo.id)">
+            {{ todo.done ? 'Done' : 'Mark done' }}
+          </Button>
+        </li>
+      </ul>
+    </CardContent>
+  </Card>
+</template>

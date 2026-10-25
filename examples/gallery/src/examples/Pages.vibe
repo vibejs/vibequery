@@ -1,0 +1,47 @@
+<script setup lang="ts">
+import { ref } from '@usevibejs/ui';
+import { keepPreviousData, useQuery } from '@usevibejs/query';
+import Button from '@vibecn/Button.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import { fetchPage } from '../api.ts';
+
+const page = ref(1);
+const table = useQuery({
+  queryKey: ['directory-page', page],
+  placeholderData: keepPreviousData,
+  queryFn: ({ signal }) => fetchPage(page.value, signal),
+});
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Directory pages</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <table class="w-full text-left text-sm">
+        <caption class="sr-only">Directory records</caption>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in table.data?.rows" :key="row.id">
+            <td>{{ row.id }}</td>
+            <td>{{ row.name }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="flex items-center gap-2">
+        <Button type="button" variant="outline" :disabled="page === 1" @click="page = page - 1">Previous</Button>
+        <span>Page {{ page }}<span v-if="table.isPlaceholderData"> (previous results)</span></span>
+        <Button type="button" variant="outline" :disabled="table.data !== undefined && page >= table.data.pages" @click="page = page + 1">Next</Button>
+      </div>
+    </CardContent>
+  </Card>
+</template>

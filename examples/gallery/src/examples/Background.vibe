@@ -1,0 +1,28 @@
+<script setup lang="ts">
+import { useQuery } from '@usevibejs/query';
+import Badge from '@vibecn/Badge.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import { fetchPulse } from '../api.ts';
+
+const pulse = useQuery({
+  queryKey: ['pulse'],
+  staleTime: 0,
+  refetchInterval: 2_000,
+  queryFn: ({ signal }) => fetchPulse(signal),
+});
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Background refresh</CardTitle>
+    </CardHeader>
+    <CardContent class="flex items-center justify-between gap-3">
+      <p>Pulse {{ pulse.data?.value ?? '…' }}</p>
+      <Badge variant="secondary">{{ pulse.isFetching ? 'Fetching' : pulse.isStale ? 'Stale' : 'Fresh' }}</Badge>
+    </CardContent>
+  </Card>
+</template>

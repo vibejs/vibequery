@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+@import '../../../../vibecn/registry/styles/theme.css';
+
+@source '.';
+@source '../../../../vibecn/registry/ui';
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}

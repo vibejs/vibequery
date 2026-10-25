@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import { useQuery } from '@usevibejs/query';
+import Badge from '@vibecn/Badge.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import Spinner from '@vibecn/Spinner.vibe';
+import { fetchPerson } from '../api.ts';
+
+const user = useQuery({
+  queryKey: ['person', 'ada'],
+  queryFn: ({ signal }) => fetchPerson('ada', signal),
+});
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Directory</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <p v-if="user.isPending" class="flex items-center gap-2">
+        <Spinner label="Loading Ada Lovelace" /> Loading the profile
+      </p>
+      <p v-else-if="user.isError" role="alert">{{ user.error.message }}</p>
+      <div v-else class="flex items-center justify-between gap-3">
+        <div>
+          <p class="text-lg font-medium">{{ user.data?.name }}</p>
+          <p class="text-muted-foreground">{{ user.data?.role }}</p>
+        </div>
+        <Badge variant="secondary">{{ user.isFetching ? 'Refreshing' : 'Cached' }}</Badge>
+      </div>
+    </CardContent>
+  </Card>
+</template>

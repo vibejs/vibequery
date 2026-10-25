@@ -1,0 +1,35 @@
+<script setup lang="ts">
+import { useQuery } from '@usevibejs/query';
+import Button from '@vibecn/Button.vibe';
+import Card from '@vibecn/Card.vibe';
+import CardContent from '@vibecn/CardContent.vibe';
+import CardHeader from '@vibecn/CardHeader.vibe';
+import CardTitle from '@vibecn/CardTitle.vibe';
+import { fetchFlaky, resetFlaky } from '../api.ts';
+
+const status = useQuery({
+  queryKey: ['flaky'],
+  retry: 2,
+  retryDelay: 150,
+  queryFn: ({ signal }) => fetchFlaky(signal),
+});
+
+function again(): void {
+  resetFlaky();
+  void status.refetch();
+}
+</script>
+
+<template>
+  <Card>
+    <CardHeader>
+      <CardTitle>Retry</CardTitle>
+    </CardHeader>
+    <CardContent class="flex flex-col gap-3">
+      <p v-if="status.isPending">Contacting the directory. Attempt {{ status.failureCount + 1 }}.</p>
+      <p v-else-if="status.isError" role="alert">{{ status.error.message }} Failed {{ status.failureCount }} times.</p>
+      <p v-else>{{ status.data }}</p>
+      <Button type="button" variant="outline" @click="again">Try again</Button>
+    </CardContent>
+  </Card>
+</template>
