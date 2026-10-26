@@ -1,7 +1,7 @@
 {
   "name": "@usevibejs/query",
   "version": "0.1.0",
-  "description": "VibeQuery — powerful asynchronous state and data fetching for Vibe.js.",
+  "description": "Async state and data fetching for vibe.js, powered by TanStack Query.",
   "keywords": [
     "async",
     "cache",

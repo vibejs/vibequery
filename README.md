@@ -1,8 +1,8 @@
 # VibeQuery
 
-**VibeQuery — Powerful Async State for Vibe.js.**
+**Async state and data fetching for vibe.js, powered by TanStack Query.**
 
-VibeQuery is a data-fetching and async state library for [Vibe.js](https://vibejs.org).
+VibeQuery is a data-fetching and async state library for [vibe.js](https://vibejs.org).
 It uses [`@tanstack/query-core`](https://tanstack.com/query) for caching, deduplication, retries,
 garbage collection, and mutations, and connects that engine to Vibe's fine-grained reactivity.
 
