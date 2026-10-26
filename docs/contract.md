@@ -1,4 +1,4 @@
-# Vibe.js contract clients
+# vibe.js contract clients
 
 `@usevibejs/contract` calls resolve to an `ApiResult`. HTTP failures, network failures, and aborted
 requests do not reject. Query Core only records a failure when `queryFn` or `mutationFn` throws or
