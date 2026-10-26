@@ -6,3 +6,6 @@ coverage/
 *.tgz
 .pnpm-store/
 examples/*/dist/
+.local-packs/
+test-results/
+.vitest/

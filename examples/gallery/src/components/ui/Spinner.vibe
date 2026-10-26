@@ -1,0 +1,13 @@
+<!-- Adapted from shadcn/ui under MIT. See vibecn.LICENSE. -->
+<script setup lang="ts">
+import type { ClassValue } from '@usevibejs/ui';
+import { cn } from '../../lib/utils.ts';
+
+defineOptions({ inheritAttrs: false });
+
+const { class: className, label = 'Loading' } = defineProps<{ class?: ClassValue; label?: string }>();
+</script>
+
+<template>
+  <svg role="status" :aria-label="label" v-bind="$attrs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" :class="cn('size-4 animate-spin', className)"><path d="M21 12a9 9 0 1 1-6.2-8.56" /></svg>
+</template>

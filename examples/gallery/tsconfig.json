@@ -12,8 +12,7 @@
     "noEmit": true,
     "types": ["vite/client"],
     "paths": {
-      "@vibecn/*": ["../../../vibecn/registry/ui/*"],
-      "__VIBECN_UTILS__": ["../../../vibecn/registry/lib/utils.ts"]
+      "@vibecn/*": ["./src/components/ui/*"]
     }
   },
   "contentMappers": [{ "package": "@usevibejs/language-tools", "extensions": [".vibe"] }],

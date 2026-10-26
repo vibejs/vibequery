@@ -1,8 +1,7 @@
 @import 'tailwindcss';
-@import '../../../../vibecn/registry/styles/theme.css';
+@import './vibecn.css';
 
 @source '.';
-@source '../../../../vibecn/registry/ui';
 
 @layer base {
   body {
