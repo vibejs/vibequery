@@ -3,6 +3,7 @@ packages:
   - examples/*
 catalogMode: strict
 catalog:
+  '@changesets/cli': 3.0.3
   '@tanstack/query-core': 5.104.5
   '@types/node': 24.19.2
   '@usevibejs/ui': 0.1.0

@@ -10,6 +10,10 @@
     "typescript",
     "vibejs"
   ],
+  "homepage": "https://github.com/vibejs/vibequery#readme",
+  "bugs": {
+    "url": "https://github.com/vibejs/vibequery/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -43,6 +47,9 @@
     },
     "./devtools/QueryDevtools.vibe": "./devtools/QueryDevtools.vibe"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsdown",
     "typecheck": "pnpm build && tsc --noEmit && pnpm --dir examples/gallery typecheck",
@@ -52,12 +59,14 @@
     "test:coverage": "vitest run --coverage --project unit --project components",
     "test:integration": "pnpm build && pnpm --dir examples/gallery build && vitest run --project integration",
     "check": "oxfmt --check && pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:integration",
-    "dev": "pnpm --dir examples/gallery dev"
+    "dev": "pnpm --dir examples/gallery dev",
+    "version-packages": "changeset version && pnpm install --lockfile-only"
   },
   "dependencies": {
     "@tanstack/query-core": "catalog:"
   },
   "devDependencies": {
+    "@changesets/cli": "catalog:",
     "@types/node": "catalog:",
     "@usevibejs/compiler": "catalog:",
     "@usevibejs/contract": "catalog:",

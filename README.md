@@ -2,7 +2,7 @@
 
 **VibeQuery — Powerful Async State for Vibe.js.**
 
-VibeQuery is a data-fetching and async state library for [Vibe.js](https://github.com/vibejs/vibejs).
+VibeQuery is a data-fetching and async state library for [Vibe.js](https://vibejs.org).
 It uses [`@tanstack/query-core`](https://tanstack.com/query) for caching, deduplication, retries,
 garbage collection, and mutations, and connects that engine to Vibe's fine-grained reactivity.
 
@@ -64,17 +64,6 @@ stable. Destructuring it copies the current values and those copies do not updat
 
 Production bundles that never import the devtools or contract entries do not include them.
 
-## Local development
-
-The library is the repository root. Examples are workspace packages under `examples/`.
-
-```bash
-pnpm install
-pnpm build
-pnpm check
-pnpm dev
-```
-
 ## Documentation
 
 - [Concepts](docs/concepts.md)
@@ -91,6 +80,34 @@ pnpm dev
 - [API reference](docs/api.md)
 - [Architecture](docs/architecture.md)
 - [Contributing](CONTRIBUTING.md)
+
+## Local development
+
+The library is the repository root. Examples are workspace packages under `examples/`.
+
+```bash
+pnpm install
+pnpm build
+pnpm check
+pnpm dev
+```
+
+## Releases
+
+Releases use changesets. Add a changeset with `pnpm changeset` for every user-visible change. A maintainer runs the Release workflow from main, which opens a release PR and publishes to npm through trusted publishing.
+
+## The vibe.js family
+
+| Package                                                   | Description                                                 |
+| --------------------------------------------------------- | ----------------------------------------------------------- |
+| [vibe.js](https://github.com/vibejs/vibejs)               | The framework: .vibe components, server and typed contracts |
+| [@usevibejs/auth](https://github.com/vibejs/vibeauth)     | Authentication with Better Auth                             |
+| [@usevibejs/form](https://github.com/vibejs/vibeform)     | Type-safe forms with TanStack Form                          |
+| [@usevibejs/motion](https://github.com/vibejs/vibemotion) | Animations, gestures and layout with Motion                 |
+| [@usevibejs/query](https://github.com/vibejs/vibequery)   | Async state and data fetching with TanStack Query           |
+| [@usevibejs/table](https://github.com/vibejs/vibetable)   | Headless tables with TanStack Table                         |
+| [@usevibejs/use](https://github.com/vibejs/vibeuse)       | Essential composables                                       |
+| [vibecn](https://github.com/vibejs/vibecn)                | shadcn/ui components as .vibe source                        |
 
 ## License
 

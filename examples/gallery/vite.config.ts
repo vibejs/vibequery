@@ -3,15 +3,12 @@ import tailwindcss from '@tailwindcss/vite';
 import { vibe } from '@usevibejs/compiler/vite';
 import { defineConfig } from 'vite';
 
-const vibecn = fileURLToPath(new URL('../../../vibecn/registry', import.meta.url));
+const components = fileURLToPath(new URL('./src/components/ui', import.meta.url));
 
 export default defineConfig({
   plugins: [vibe(), tailwindcss()],
   resolve: {
-    alias: {
-      '@vibecn': `${vibecn}/ui`,
-      __VIBECN_UTILS__: `${vibecn}/lib/utils.ts`,
-    },
+    alias: { '@vibecn': components },
   },
   build: { target: 'es2022' },
 });

@@ -33,10 +33,7 @@ export default defineConfig({
       {
         plugins: [vibe()],
         resolve: {
-          alias: [
-            { find: '@vibecn', replacement: resolve('../vibecn/registry/ui') },
-            { find: '__VIBECN_UTILS__', replacement: resolve('../vibecn/registry/lib/utils.ts') },
-          ],
+          alias: [{ find: '@vibecn', replacement: resolve('examples/gallery/src/components/ui') }],
         },
         test: {
           name: 'integration',
